@@ -50,9 +50,7 @@ class PostCommand extends Command
             return Command::SUCCESS;
         }
 
-        $card = $this->buildCard($news);
-
-        $this->blueskyApi->post($this->captionProvider->getRandomCaption(), $card);
+        $this->blueskyApi->post($this->captionProvider->getRandomCaption(), $this->buildCard($news));
 
         return Command::SUCCESS;
     }
