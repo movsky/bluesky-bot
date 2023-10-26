@@ -7,20 +7,6 @@ use Symfony\Component\DomCrawler\Crawler;
 class FeedReader
 {
 
-    public function getNews(string $feedUri, string $platform): array
-    {
-        $crawler = $this->readXml($feedUri);
-
-        return $crawler->filter('item')->each(function (Crawler $node, string $platform): News {
-            return new News(
-                $node->filter('link')->text(),
-                $node->filter('title')->text(),
-                $node->filter('description')->text(),
-                $platform
-            );
-        });
-    }
-
     public function getNewest(string $feedUri, string $platform): News
     {
         $crawler = $this->readXml($feedUri);
@@ -28,7 +14,7 @@ class FeedReader
         return new News(
             $crawler->filter('item > link')->first()->text(),
             $crawler->filter('item > title')->first()->text(),
-            $crawler->filter('item > description')->first()->text(),
+            strip_tags($crawler->filter('item > description')->first()->text()),
             $platform
         );
     }
